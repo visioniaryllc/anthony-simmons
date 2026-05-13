@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Anthony Simmons — Violinist</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0c0b09;
+    --bg2: #111009;
+    --gold: #c9a84c;
+    --gold-light: #e2c97e;
+    --cream: #f0e8d8;
+    --muted: #7a7060;
+    --text: #d8cfc0;
+    --border: rgba(201,168,76,0.18);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.6rem 4rem;
+    background: linear-gradient(to bottom, rgba(12,11,9,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(4px);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    color: var(--cream);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+
+  .nav-links a {
+    text-decoration: none;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 70% 40%, rgba(201,168,76,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(201,168,76,0.04) 0%, transparent 50%),
+      linear-gradient(160deg, #161410 0%, #0c0b09 50%, #0e0d0a 100%);
+  }
+
+  .hero-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, var(--border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 80% at center, black 30%, transparent 80%);
+    opacity: 0.4;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    animation: fadeUp 1.4s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    animation: fadeUp 1.4s 0.1s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(4rem, 10vw, 9rem);
+    font-weight: 300;
+    line-height: 0.9;
+    color: var(--cream);
+    letter-spacing: 0.04em;
+    animation: fadeUp 1.4s 0.2s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-subtitle {
+    margin-top: 1.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--muted);
+    animation: fadeUp 1.4s 0.35s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  .hero-divider {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 2rem auto;
+    animation: expandWidth 1.2s 0.5s cubic-bezier(0.16,1,0.3,1) both;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.85rem 2.5rem;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    transition: background 0.3s, color 0.3s;
+    animation: fadeUp 1.4s 0.5s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .hero-cta:hover { background: var(--gold); color: var(--bg); }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--muted);
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    animation: fadeIn 2s 1s both;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s 1s infinite;
+  }
+
+  /* ── SECTIONS ── */
+  section { position: relative; z-index: 1; }
+
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 7rem 4rem;
+  }
+
+  .section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.1;
+    margin-bottom: 2.5rem;
+  }
+
+  .section-title em { font-style: italic; color: var(--gold-light); }
+
+  /* ── BIO ── */
+  #bio { background: var(--bg2); }
+
+  .bio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .bio-image-wrap {
+    position: relative;
+  }
+
+  .bio-image-frame {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: linear-gradient(145deg, #1a1810, #0e0d0b);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bio-image-frame::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 1px solid var(--border);
+  }
+
+  .bio-image-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 40% 30%, rgba(201,168,76,0.08), transparent 60%);
+  }
+
+  .violin-icon {
+    font-size: 5rem;
+    opacity: 0.15;
+    color: var(--gold);
+  }
+
+  .bio-placeholder-text {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .bio-corner {
+    position: absolute;
+    width: 20px; height: 20px;
+    border-color: var(--gold);
+    border-style: solid;
+    opacity: 0.6;
+  }
+  .bio-corner.tl { top: -6px; left: -6px; border-width: 1px 0 0 1px; }
+  .bio-corner.br { bottom: -6px; right: -6px; border-width: 0 1px 1px 0; }
+
+  .bio-text p {
+    font-size: 0.92rem;
+    line-height: 1.9;
+    color: var(--text);
+    margin-bottom: 1.4rem;
+  }
+
+  .bio-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  /* ── REPERTOIRE ── */
+  #repertoire { background: var(--bg); }
+
+  .rep-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .rep-category {
+    background: var(--bg);
+    padding: 2.5rem;
+    transition: background 0.3s;
+  }
+  .rep-category:hover { background: #141210; }
+
+  .rep-cat-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    color: var(--gold-light);
+    margin-bottom: 1.2rem;
+    font-style: italic;
+  }
+
+  .rep-list { list-style: none; }
+  .rep-list li {
+    font-size: 0.75rem;
+    color: var(--muted);
+    padding: 0.45rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+  .rep-list li:hover { color: var(--cream); }
+  .rep-list li:last-child { border-bottom: none; }
+
+  .rep-composer {
+    color: var(--gold);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    display: block;
+    margin-bottom: 0.1rem;
+  }
+
+  /* ── PERFORMANCES ── */
+  #performances { background: var(--bg2); }
+
+  .perf-list { display: flex; flex-direction: column; gap: 0; }
+
+  .perf-item {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.8rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  .perf-item:hover { background: rgba(201,168,76,0.03); }
+
+  .perf-date {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .perf-title {
+    font-size: 0.85rem;
+    color: var(--cream);
+    margin-bottom: 0.2rem;
+  }
+
+  .perf-venue {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .perf-tag {
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.3rem 0.8rem;
+  }
+
+  /* ── BOOKING ── */
+  #booking {
+    background: var(--bg);
+    text-align: center;
+  }
+
+  .booking-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 7rem 2rem;
+  }
+
+  .booking-inner p {
+    font-size: 0.9rem;
+    line-height: 1.9;
+    color: var(--muted);
+    margin-bottom: 3rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .booking-cta {
+    display: inline-block;
+    padding: 1.1rem 3.5rem;
+    background: var(--gold);
+    color: var(--bg);
+    text-decoration: none;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .booking-cta:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .booking-note {
+    margin-top: 2rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+  }
+
+  .booking-note a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .dubsado-wrap {
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto 2rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .dubsado-wrap iframe {
+    display: block;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+  }
+
+  footer a { color: var(--gold); text-decoration: none; }
+
+  /* ── GOLD HORIZONTAL RULE ── */
+  .gold-rule {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  .gold-rule::before, .gold-rule::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .gold-rule-diamond {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+  @keyframes expandWidth {
+    from { width: 0; } to { width: 60px; }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.15); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .section-inner { padding: 5rem 1.5rem; }
+    .bio-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .bio-image-wrap { max-width: 320px; margin: 0 auto; }
+    .rep-grid { grid-template-columns: 1fr; }
+    .perf-item { grid-template-columns: 80px 1fr; }
+    .perf-tag { display: none; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">A. Simmons</a>
+  <ul class="nav-links">
+    <li><a href="#bio">Biography</a></li>
+    <li><a href="#repertoire">Repertoire</a></li>
+    <li><a href="#performances">Performances</a></li>
+    <li><a href="#booking">Book</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Violin · Guitar · Solo · Chamber</p>
+    <h1 class="hero-name">Anthony<br><em>Simmons</em></h1>
+    <p class="hero-subtitle">23 Years · Professional Musician</p>
+    <div class="hero-divider"></div>
+    <a href="#booking" class="hero-cta">Book a Performance</a>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- BIO -->
+<section id="bio">
+  <div class="section-inner">
+    <div class="bio-grid">
+      <div class="bio-image-wrap">
+        <div class="bio-corner tl"></div>
+        <div class="bio-corner br"></div>
+        <div class="bio-image-frame">
+          <div class="violin-icon">🎻</div>
+          <span class="bio-placeholder-text">Your photo here</span>
+        </div>
+      </div>
+      <div class="bio-text">
+        <p class="section-label">Biography</p>
+        <h2 class="section-title">Musical <em>Versatility</em><br>& Artistry</h2>
+        <p>
+          Anthony Simmons is a seasoned musician with 23 years of experience, specializing in violin and guitar. His performances blend technical mastery with a diverse repertoire that spans modern pop, R&B, Americana, and classical masterpieces.
+        </p>
+        <p>
+          Known for a warm, expressive tone, Anthony provides an elegant musical backdrop for weddings, corporate events, and symphony performances. His collaborative spirit often leads him to perform in duos with fellow artists, creating rich, multi-layered soundscapes across Central Florida and beyond.
+        </p>
+        <p>
+          Beyond the stage, Anthony’s background in biology and microbiology informs a disciplined, analytical approach to his craft, ensuring every arrangement is polished to perfection.
+        </p>
+        <div class="bio-stats">
+          <div>
+            <div class="stat-num">23</div>
+            <div class="stat-label">Years of Experience</div>
+          </div>
+          <div>
+            <div class="stat-num">2</div>
+            <div class="stat-label">Core Instruments</div>
+          </div>
+          <div>
+            <div class="stat-num">100+</div>
+            <div class="stat-label">Weddings Played</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REPERTOIRE -->
+<section id="repertoire">
+  <div class="section-inner">
+    <p class="section-label">Repertoire</p>
+    <h2 class="section-title">Styles <em>& Selections</em></h2>
+    <div class="gold-rule"><div class="gold-rule-diamond"></div></div>
+    <div class="rep-grid">
+      <div class="rep-category">
+        <div class="rep-cat-title">Modern & Pop</div>
+        <ul class="rep-list">
+          <li>Contemporary Chart-Toppers</li>
+          <li>R&B Favorites</li>
+          <li>Cinematic Soundtracks</li>
+          <li>Indie & Americana</li>
+        </ul>
+      </div>
+      <div class="rep-category">
+        <div class="rep-cat-title">Classical</div>
+        <ul class="rep-list">
+          <li>Bach, Beethoven, & Brahms</li>
+          <li>Romantic Era Classics</li>
+          <li>Orchestral Repertoire</li>
+          <li>Traditional Wedding Standards</li>
+        </ul>
+      </div>
+      <div class="rep-category">
+        <div class="rep-cat-title">Custom Arrangements</div>
+        <ul class="rep-list">
+          <li>Personalized Song Choices</li>
+          <li>Genre-Bending Covers</li>
+          <li>Original String Arrangements</li>
+          <li>Collaborative Duo Sets</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERFORMANCES -->
+<section id="performances">
+  <div class="section-inner">
+    <p class="section-label">Events & Residencies</p>
+    <h2 class="section-title">Recent <em>Performances</em></h2>
+    <div class="gold-rule"><div class="gold-rule-diamond"></div></div>
+    <div class="perf-list">
+      <div class="perf-item">
+        <div class="perf-date">May 2026</div>
+        <div>
+          <div class="perf-title">Wedding Performance Week</div>
+          <div class="perf-venue">Mountain Venue · Cleveland, SC</div>
+        </div>
+        <div class="perf-tag">Upcoming</div>
+      </div>
+      <div class="perf-item">
+        <div class="perf-date">Apr 17, 2026</div>
+        <div>
+          <div class="perf-title">Courtyard Ceremony Soloist</div>
+          <div class="perf-venue">Mission Resort + Club · Howey-in-the-Hills, FL</div>
+        </div>
+        <div class="perf-tag">Completed</div>
+      </div>
+      <div class="perf-item">
+        <div class="perf-date">Mar 25, 2026</div>
+        <div>
+          <div class="perf-title">Regional Performance & Arrangements</div>
+          <div class="perf-venue">Wedding Ceremony · Alabama</div>
+        </div>
+        <div class="perf-tag">Completed</div>
+      </div>
+      <div class="perf-item">
+        <div class="perf-date">Jan 2026</div>
+        <div>
+          <div class="perf-title">Symphony Rehearsal Cycle</div>
+          <div class="perf-venue">Maitland Symphony Orchestra · Maitland, FL</div>
+        </div>
+        <div class="perf-tag">Active</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section id="booking">
+  <div class="booking-inner">
+    <p class="section-label">Booking & Investment</p>
+    <h2 class="section-title">Work <em>Together</em></h2>
+    <div class="gold-rule"><div class="gold-rule-diamond"></div></div>
+    <p>
+      Ceremony Solo Violin: $450<br>
+      Ceremony + Cocktail Hour: $700
+    </p>
+    <p>
+      Available for weddings, private events, and orchestral engagements across Florida and for destination travel.
+    </p>
+    <div class="dubsado-wrap">
+      <iframe src="https://hello.dubsado.com/public/form/view/67588ffb662441003ab9e87a?iframe=true" frameborder="0" width="100%" height="800" scrolling="no"></iframe>
+    </div>
+    <p class="booking-note">
+      Prefer email? <a href="mailto:booking@anthonysimmons.com">booking@anthonysimmons.com</a>
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Anthony Simmons. All rights reserved.</span>
+  <span>Longwood, Florida</span>
+  <span><a href="mailto:booking@anthonysimmons.com">booking@anthonysimmons.com</a></span>
+</footer>
+
+</body>
+</html>
